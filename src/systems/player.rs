@@ -35,7 +35,7 @@ impl<'s> System<'s> for PlayerSystem {
             if let Some(mv_y) = movement_y {
                 let mv_y = mv_y;
                 let scaled_y = mv_y as f32 * time.time_scale();
-                
+
                 let player_y = transform.translation().y;
                 transform.set_y(
                     (player_y + scaled_y)
