@@ -5,6 +5,7 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage},
+    LoggerConfig, StdoutLog, LogLevelFilter::Warn,
 };
 
 mod rogue;
@@ -13,7 +14,12 @@ use rogue::Rogue;
 mod systems;
 
 fn main() -> amethyst::Result<()> {
-    amethyst::start_logger(Default::default());
+    amethyst::start_logger(LoggerConfig {
+        stdout: StdoutLog::Colored,
+        level_filter: Warn,
+        log_file: None,
+        allow_env_override: true,
+    });
 
     let path = "./resources/display_config.ron";
 

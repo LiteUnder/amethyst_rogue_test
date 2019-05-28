@@ -9,10 +9,10 @@ use amethyst::renderer::{
 
 pub struct Rogue;
 
-pub const ROOM_WIDTH: f32 = 100.0;
-pub const ROOM_HEIGHT: f32 = 100.0;
+pub const ROOM_WIDTH: f32 = 160.0;
+pub const ROOM_HEIGHT: f32 = 90.0;
 
-pub const PLAYER_SIZE: f32 = 32.0;
+pub const PLAYER_SIZE: f32 = 16.0;
 
 impl SimpleState for Rogue {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
@@ -70,6 +70,8 @@ fn initialise_player(world: &mut World, sprite_sheet: SpriteSheetHandle) {
         sprite_sheet: sprite_sheet.clone(),
         sprite_number: 0, // player is the first sprite in sprite_sheet
     };
+
+    transform.set_scale(0.5, 0.5, 1.0);
 
     world
         .create_entity()
