@@ -20,7 +20,8 @@ impl SimpleState for Rogue {
 
         let sprite_sheet_handle = load_sprite_sheet(world);
 
-        world.register::<Player>();
+        // no longer needed
+        // world.register::<Player>();
 
         initialise_player(world, sprite_sheet_handle);
         initialise_camera(world);
@@ -71,7 +72,7 @@ fn initialise_player(world: &mut World, sprite_sheet: SpriteSheetHandle) {
         sprite_number: 0, // player is the first sprite in sprite_sheet
     };
 
-    transform.set_scale(0.5, 0.5, 1.0);
+    transform.set_scale(0.5, 0.5, 0.0);
 
     world
         .create_entity()

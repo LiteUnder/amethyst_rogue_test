@@ -5,7 +5,8 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage},
-    LoggerConfig, StdoutLog, LogLevelFilter::Warn,
+    LogLevelFilter::Warn,
+    LoggerConfig, StdoutLog,
 };
 
 mod rogue;
