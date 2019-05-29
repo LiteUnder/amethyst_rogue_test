@@ -28,7 +28,7 @@ fn main() -> amethyst::Result<()> {
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
-            .clear_target([0.0, 0.0, 0.0, 1.0], 1.0)
+            .clear_target([1.0, 1.0, 1.0, 1.0], 1.0)
             .with_pass(DrawFlat2D::new()),
     );
 
@@ -36,7 +36,11 @@ fn main() -> amethyst::Result<()> {
         .with_bindings_from_file("./resources/bindings_config.ron")?;
 
     let game_data = GameDataBuilder::default()
-        .with_bundle(RenderBundle::new(pipe, Some(config)).with_sprite_sheet_processor())?
+        .with_bundle(
+            RenderBundle::new(pipe, Some(config))
+                .with_sprite_sheet_processor()
+                .with_sprite_visibility_sorting(&[])
+        )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with(systems::PlayerSystem, "player_system", &["input_system"]);

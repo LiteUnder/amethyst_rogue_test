@@ -21,10 +21,10 @@ impl<'s> System<'s> for PlayerSystem {
             let movement_y = input.axis_value("player_y");
 
             if let Some(mv_x) = movement_x {
-                // transform.translate_x(mv_x as f32);
-
                 let player_x = transform.translation().x;
+                
                 let scaled_x = mv_x as f32 * time.time_scale();
+                
                 transform.set_x(
                     (player_x + scaled_x)
                         .max(PLAYER_SIZE * 0.5)
@@ -33,7 +33,6 @@ impl<'s> System<'s> for PlayerSystem {
             }
 
             if let Some(mv_y) = movement_y {
-                let mv_y = mv_y;
                 let scaled_y = mv_y as f32 * time.time_scale();
 
                 let player_y = transform.translation().y;
