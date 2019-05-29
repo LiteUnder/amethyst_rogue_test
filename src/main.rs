@@ -4,7 +4,16 @@ use amethyst::{
     core::transform::TransformBundle,
     input::InputBundle,
     prelude::*,
-    renderer::{DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage},
+    renderer::{
+        DisplayConfig,
+        DrawFlat2D,
+        Pipeline, 
+        RenderBundle, 
+        Stage,
+        ColorMask,
+        ALPHA,
+        DepthMode,
+    },
     LogLevelFilter::Warn,
     LoggerConfig, StdoutLog,
 };
@@ -29,7 +38,13 @@ fn main() -> amethyst::Result<()> {
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([1.0, 1.0, 1.0, 1.0], 1.0)
-            .with_pass(DrawFlat2D::new()),
+            .with_pass(DrawFlat2D::new()
+                .with_transparency(
+                    ColorMask::all(),
+                    ALPHA,
+                    Some(DepthMode::LessEqualWrite)
+                )
+            ),
     );
 
     let input_bundle = InputBundle::<String, String>::new()

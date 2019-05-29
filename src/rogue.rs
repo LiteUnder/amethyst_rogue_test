@@ -4,7 +4,7 @@ use amethyst::ecs::prelude::{Component, DenseVecStorage};
 use amethyst::prelude::*;
 use amethyst::renderer::{
     Camera, PngFormat, Projection, SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle,
-    Texture, TextureMetadata,
+    Texture, TextureMetadata, 
 };
 
 pub struct Rogue;
@@ -64,7 +64,7 @@ fn initialise_camera(world: &mut World) {
 
 fn initialise_player(world: &mut World, sprite_sheet: SpriteSheetHandle) {
     let mut transform = Transform::default();
-
+    
     transform.set_xyz(ROOM_WIDTH * 0.5, ROOM_HEIGHT * 0.5, 0.0);
 
     let sprite_render = SpriteRender {
