@@ -7,6 +7,9 @@ use amethyst::renderer::{
     Texture, TextureMetadata, 
 };
 
+mod bullet;
+use bullet::*;
+
 pub struct Rogue;
 
 pub const ROOM_WIDTH: f32 = 160.0;
@@ -22,9 +25,12 @@ impl SimpleState for Rogue {
 
         // no longer needed
         // world.register::<Player>();
+        //
+        world.register::<Bullet>();
 
-        initialise_player(world, sprite_sheet_handle);
-        initialise_camera(world);
+        init_bullet(world, sprite_sheet_handle.clone());
+        init_player(world, sprite_sheet_handle);
+        init_camera(world);
     }
 }
 
@@ -46,7 +52,7 @@ impl Component for Player {
     type Storage = DenseVecStorage<Self>;
 }
 
-fn initialise_camera(world: &mut World) {
+fn init_camera(world: &mut World) {
     let mut transform = Transform::default();
     transform.set_z(1.0);
 
@@ -62,7 +68,7 @@ fn initialise_camera(world: &mut World) {
         .build();
 }
 
-fn initialise_player(world: &mut World, sprite_sheet: SpriteSheetHandle) {
+fn init_player(world: &mut World, sprite_sheet: SpriteSheetHandle) {
     let mut transform = Transform::default();
     
     transform.set_xyz(ROOM_WIDTH * 0.5, ROOM_HEIGHT * 0.5, 0.0);
