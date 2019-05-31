@@ -3,7 +3,8 @@ use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 
-use crate::rogue::{Player, PLAYER_SIZE, ROOM_HEIGHT, ROOM_WIDTH};
+use crate::rogue::{ROOM_HEIGHT, ROOM_WIDTH};
+use crate::rogue::player::{Player, PLAYER_SIZE};
 
 pub struct PlayerSystem;
 

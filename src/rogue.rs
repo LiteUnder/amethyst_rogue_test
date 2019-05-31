@@ -6,18 +6,18 @@ use amethyst::renderer::{
     Texture, TextureMetadata, 
 };
 
-mod bullet;
+pub mod bullet;
 use bullet::*;
 
-mod player;
-pub use player::*; // re-export for system
+pub mod player;
+use player::*; // re-export for system
 
 pub struct Rogue;
 
 pub const ROOM_WIDTH: f32 = 160.0;
 pub const ROOM_HEIGHT: f32 = 90.0;
 
-pub const PLAYER_SIZE: f32 = 16.0;
+
 
 impl SimpleState for Rogue {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
@@ -28,9 +28,8 @@ impl SimpleState for Rogue {
         // no longer needed
         // world.register::<Player>();
         //
-        world.register::<Bullet>();
-
-        init_bullet(world, sprite_sheet_handle.clone());
+        //world.register::<Bullet>();
+        spawn_bullet(world, sprite_sheet_handle.clone(), [2.0, 0.0]);
         init_player(world, sprite_sheet_handle);
         init_camera(world);
     }

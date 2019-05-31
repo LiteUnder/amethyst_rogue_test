@@ -7,6 +7,8 @@ use amethyst::renderer::{
 
 use crate::rogue::{ROOM_WIDTH, ROOM_HEIGHT};
 
+pub const PLAYER_SIZE: f32 = 16.0;
+
 pub struct Player {
     pub width: f32,
     pub height: f32,
