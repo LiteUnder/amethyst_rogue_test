@@ -15,7 +15,7 @@ pub struct Bullet {
 }
 
 impl Bullet {
-    fn new(vel: [f32; 2]) -> Bullet {
+    pub fn new(vel: [f32; 2]) -> Bullet {
         Bullet {
             velocity: vel, 
         }

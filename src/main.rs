@@ -59,7 +59,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with(systems::PlayerSystem, "player_system", &["input_system"])
-        .with(systems::BulletSystem, "bullet_system", &[]);
+        .with(systems::BulletSystem, "bullet_system", &[])
+        .with(systems::ShootSystem{delay: 0}, "shoot_system", &["input_system"]);
     let mut game = Application::new("./", Rogue, game_data)?;
 
     game.run();

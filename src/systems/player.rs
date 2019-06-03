@@ -16,6 +16,7 @@ impl<'s> System<'s> for PlayerSystem {
         Read<'s, Time>,
     );
 
+
     fn run(&mut self, (mut transforms, player, input, time): Self::SystemData) {
         for (_, transform) in (&player, &mut transforms).join() {
             let movement_x = input.axis_value("player_x");

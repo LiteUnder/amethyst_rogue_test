@@ -2,22 +2,21 @@ use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::transform::Transform;
 use amethyst::prelude::*;
 use amethyst::renderer::{
-    Camera, PngFormat, Projection, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle,
-    Texture, TextureMetadata, 
+    Camera, PngFormat, Projection, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, SpriteRender, 
 };
 
 pub mod bullet;
-use bullet::*;
 
 pub mod player;
 use player::*; // re-export for system
 
 pub struct Rogue;
+pub struct BulletSprite {
+    pub sprite: SpriteRender,
+}
 
 pub const ROOM_WIDTH: f32 = 160.0;
 pub const ROOM_HEIGHT: f32 = 90.0;
-
-
 
 impl SimpleState for Rogue {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
@@ -25,17 +24,23 @@ impl SimpleState for Rogue {
 
         let sprite_sheet_handle = load_sprite_sheet(world);
 
+        let bullet_sprite = BulletSprite {
+            sprite: SpriteRender {
+                sprite_sheet: sprite_sheet_handle.clone(),
+                sprite_number: 1,
+            }
+        };
+
+        world.add_resource(bullet_sprite);
+            
         // no longer needed
         // world.register::<Player>();
         //
         //world.register::<Bullet>();
-        spawn_bullet(world, sprite_sheet_handle.clone(), [2.0, 0.0]);
         init_player(world, sprite_sheet_handle);
         init_camera(world);
     }
 }
-
-
 
 fn init_camera(world: &mut World) {
     let mut transform = Transform::default();
@@ -52,8 +57,6 @@ fn init_camera(world: &mut World) {
         .with(transform)
         .build();
 }
-
-
 
 fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
     // load in sprite sheet

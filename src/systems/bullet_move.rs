@@ -21,9 +21,11 @@ impl<'s> System<'s> for BulletSystem {
             local.translate_y(bullet.velocity[1] * time.time_scale());
 
             if local.translation().x < BULLET_WIDTH * -0.5 ||
-                local.translation().x > ROOM_WIDTH + BULLET_WIDTH * 0.5 {
-                    entities.delete(e).unwrap();
-                }
+                local.translation().x > ROOM_WIDTH + BULLET_WIDTH * 0.5 ||
+                local.translation().y < BULLET_HEIGHT * -0.5 ||
+                local.translation().y > ROOM_HEIGHT + BULLET_HEIGHT * 0.5 {
+                    entities.delete(e).unwrap(); // delete offscreen bullet
+            }
         }
     }
 }
