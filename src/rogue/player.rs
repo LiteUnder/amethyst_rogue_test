@@ -12,6 +12,7 @@ pub const PLAYER_SIZE: f32 = 16.0;
 pub struct Player {
     pub width: f32,
     pub height: f32,
+    pub velocity: [f32; 2],
 }
 
 impl Player {
@@ -19,6 +20,7 @@ impl Player {
         Player {
             width: 1.0,
             height: 1.0,
+            velocity: [0.0, 0.0],
         }
     }
 }

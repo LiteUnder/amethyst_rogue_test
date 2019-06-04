@@ -1,6 +1,6 @@
 use amethyst::core::timing::Time;
 use amethyst::core::Transform;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
+use amethyst::ecs::{Join, Read, System, WriteStorage};
 use amethyst::input::InputHandler;
 
 use crate::rogue::{ROOM_HEIGHT, ROOM_WIDTH};
@@ -11,14 +11,14 @@ pub struct PlayerSystem;
 impl<'s> System<'s> for PlayerSystem {
     type SystemData = (
         WriteStorage<'s, Transform>,
-        ReadStorage<'s, Player>,
+        WriteStorage<'s, Player>,
         Read<'s, InputHandler<String, String>>,
         Read<'s, Time>,
     );
 
 
-    fn run(&mut self, (mut transforms, player, input, time): Self::SystemData) {
-        for (_, transform) in (&player, &mut transforms).join() {
+    fn run(&mut self, (mut transforms, mut player, input, time): Self::SystemData) {
+        for (play, transform) in (&mut player, &mut transforms).join() {
             let movement_x = input.axis_value("player_x");
             let movement_y = input.axis_value("player_y");
 
@@ -32,6 +32,10 @@ impl<'s> System<'s> for PlayerSystem {
                         .max(PLAYER_SIZE * 0.5)
                         .min(ROOM_WIDTH - PLAYER_SIZE * 0.5),
                 );
+
+                play.velocity[0] = mv_x as f32;
+            } else {
+                play.velocity[0] = 0.0;
             }
 
             if let Some(mv_y) = movement_y {
@@ -43,6 +47,10 @@ impl<'s> System<'s> for PlayerSystem {
                         .max(PLAYER_SIZE * 0.5)
                         .min(ROOM_HEIGHT - PLAYER_SIZE * 0.5),
                 );
+                
+                play.velocity[1] = mv_y as f32;
+            } else {
+                play.velocity[1] = 0.0;
             }
         }
     }

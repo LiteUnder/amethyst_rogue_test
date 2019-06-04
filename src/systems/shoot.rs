@@ -26,27 +26,31 @@ impl<'s> System<'s> for ShootSystem {
 
 
     fn run(&mut self, (mut transforms, mut bullets, input, entities, player, mut sprites, bullet_sprite): Self::SystemData) {
-        
-        let mut player_trans = Transform::default();
+        if self.delay != 0 {
+            self.delay -= 1;
+        }
 
-        for (_, transform) in (&player, &transforms).join() {
+        let mut player_trans = Transform::default();
+        let mut player_vel: [f32; 2] = [0.0, 0.0];
+
+        for (player, transform) in (&player, &transforms).join() {
             player_trans = transform.clone();
+            player_vel = player.velocity;
         }
 
         let shoot_x = input.axis_value("shoot_x").unwrap_or(0.0) as f32;
         let shoot_y = input.axis_value("shoot_y").unwrap_or(0.0) as f32;
 
-        if shoot_x != 0.0 || shoot_y != 0.0 {
-            self.delay += 1;
-        }
-        if self.delay > 30 {
+        if (shoot_x != 0.0 || shoot_y != 0.0) && self.delay <= 0 { 
+            
+            
             entities
                 .build_entity()
                 .with(player_trans, &mut transforms)
-                .with(Bullet::new([shoot_x, shoot_y]), &mut bullets)
+                .with(Bullet::new([shoot_x * 2.0 + player_vel[0], shoot_y * 2.0 + player_vel[1]]), &mut bullets)
                 .with(bullet_sprite.sprite.clone(), &mut sprites)
                 .build();
-            self.delay = 0;
+            self.delay = 30;
         }
     }
 }
