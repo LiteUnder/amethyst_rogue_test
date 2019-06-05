@@ -1,6 +1,7 @@
 use amethyst::ecs::prelude::{Component, DenseVecStorage};
 
-pub const BULLET_WIDTH: f32 = 4.25;
+// sprite size * 0.25
+pub const BULLET_WIDTH: f32 = 2.0;
 pub const BULLET_HEIGHT: f32 = 2.0;
 
 pub struct Bullet {
