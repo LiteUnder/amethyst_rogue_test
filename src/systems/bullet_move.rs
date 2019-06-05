@@ -17,8 +17,7 @@ impl<'s> System<'s> for BulletSystem {
 
     fn run(&mut self, (entities, mut transforms, bullets, time): Self::SystemData) {
         for (e, local, bullet) in (&entities, &mut transforms, &bullets).join() {
-            local.translate_x(bullet.velocity[0] * time.time_scale());
-            local.translate_y(bullet.velocity[1] * time.time_scale());
+            local.move_right(bullet.velocity * time.time_scale()); // rotation & velocity handled upon creation
 
             if local.translation().x < BULLET_WIDTH * -0.5 ||
                 local.translation().x > ROOM_WIDTH + BULLET_WIDTH * 0.5 ||
