@@ -28,7 +28,7 @@ fn main() -> amethyst::Result<()> {
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
-            .clear_target([0.5, 0.5, 0.5, 1.0], 1.0)
+            .clear_target([0.2, 0.2, 0.2, 1.0], 1.0)
             .with_pass(DrawFlat2D::new().with_transparency(
                 // allows sprites with transparent backgrounds
                 ColorMask::all(),

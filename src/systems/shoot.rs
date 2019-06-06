@@ -47,8 +47,8 @@ impl<'s> System<'s> for ShootSystem {
         if (shoot_x != 0.0 || shoot_y != 0.0) && self.delay <= 0 {
             // scales the velocity of a fired bullet to the player's movement
             let scaled_vel = [
-                shoot_x * 2.0 + player_vel[0] * 0.5,
-                shoot_y * 2.0 + player_vel[1] * 0.5,
+                shoot_x * 1.7 + player_vel[0] * 0.3,
+                shoot_y * 1.7 + player_vel[1] * 0.3,
             ];
 
             // pythagorean theorum for a bullet's diagonal velocity
