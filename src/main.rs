@@ -5,14 +5,7 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{
-        DisplayConfig,
-        DrawFlat2D,
-        Pipeline, 
-        RenderBundle, 
-        Stage,
-        ColorMask,
-        ALPHA,
-        DepthMode,
+        ColorMask, DepthMode, DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage, ALPHA,
     },
     LogLevelFilter::Warn,
     LoggerConfig, StdoutLog,
@@ -31,20 +24,17 @@ fn main() -> amethyst::Result<()> {
         allow_env_override: true,
     });
 
-    let path = "./resources/display_config.ron";
-
-    let config = DisplayConfig::load(&path);
+    let config = DisplayConfig::load("./resources/display_config.ron");
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.5, 0.5, 0.5, 1.0], 1.0)
-            .with_pass(DrawFlat2D::new()
-                .with_transparency(
-                    ColorMask::all(),
-                    ALPHA,
-                    Some(DepthMode::LessEqualWrite)
-                )
-            ),
+            .with_pass(DrawFlat2D::new().with_transparency(
+                // allows sprites with transparent backgrounds
+                ColorMask::all(),
+                ALPHA,
+                Some(DepthMode::LessEqualWrite),
+            )),
     );
 
     let input_bundle = InputBundle::<String, String>::new()
@@ -54,13 +44,17 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&[])
+                .with_sprite_visibility_sorting(&[]),
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with(systems::PlayerSystem, "player_system", &["input_system"])
         .with(systems::BulletSystem, "bullet_system", &[])
-        .with(systems::ShootSystem{delay: 0}, "shoot_system", &["input_system"]);
+        .with(
+            systems::ShootSystem { delay: 0 },
+            "shoot_system",
+            &["input_system"],
+        );
     let mut game = Application::new("./", Rogue, game_data)?;
 
     game.run();

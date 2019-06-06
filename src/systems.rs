@@ -1,7 +1,7 @@
-mod player;
 mod bullet_move;
+mod player;
 mod shoot;
 
-pub use shoot::ShootSystem;
 pub use bullet_move::BulletSystem;
 pub use player::PlayerSystem;
+pub use shoot::ShootSystem;

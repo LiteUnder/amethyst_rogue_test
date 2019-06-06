@@ -1,11 +1,9 @@
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Component, DenseVecStorage};
 use amethyst::prelude::*;
-use amethyst::renderer::{
-    SpriteRender, SpriteSheetHandle, 
-};
+use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
 
-use crate::rogue::{ROOM_WIDTH, ROOM_HEIGHT};
+use crate::rogue::{ROOM_HEIGHT, ROOM_WIDTH};
 
 pub const PLAYER_SIZE: f32 = 16.0;
 
@@ -31,7 +29,7 @@ impl Component for Player {
 
 pub fn init_player(world: &mut World, sprite_sheet: SpriteSheetHandle) {
     let mut transform = Transform::default();
-    
+
     transform.set_xyz(ROOM_WIDTH * 0.5, ROOM_HEIGHT * 0.5, 0.0);
 
     let sprite_render = SpriteRender {

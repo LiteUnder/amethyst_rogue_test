@@ -2,7 +2,8 @@ use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::transform::Transform;
 use amethyst::prelude::*;
 use amethyst::renderer::{
-    Camera, PngFormat, Projection, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, SpriteRender, 
+    Camera, PngFormat, Projection, SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle,
+    Texture, TextureMetadata,
 };
 
 pub mod bullet;
@@ -11,10 +12,12 @@ pub mod player;
 use player::*; // re-export for system
 
 pub struct Rogue;
+
 pub struct BulletSprite {
     pub sprite: SpriteRender,
 }
 
+// 16:9 aspect * 10.0
 pub const ROOM_WIDTH: f32 = 160.0;
 pub const ROOM_HEIGHT: f32 = 90.0;
 
@@ -28,15 +31,12 @@ impl SimpleState for Rogue {
             sprite: SpriteRender {
                 sprite_sheet: sprite_sheet_handle.clone(),
                 sprite_number: 1,
-            }
+            },
         };
 
+        // used by the ShootSystem to spawn bullets
         world.add_resource(bullet_sprite);
-            
-        // no longer needed
-        // world.register::<Player>();
-        //
-        //world.register::<Bullet>();
+
         init_player(world, sprite_sheet_handle);
         init_camera(world);
     }

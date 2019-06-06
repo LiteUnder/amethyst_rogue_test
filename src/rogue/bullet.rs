@@ -10,9 +10,7 @@ pub struct Bullet {
 
 impl Bullet {
     pub fn new(vel: f32) -> Bullet {
-        Bullet {
-            velocity: vel, 
-        }
+        Bullet { velocity: vel }
     }
 }
 

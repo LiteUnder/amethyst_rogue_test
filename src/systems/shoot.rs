@@ -1,8 +1,8 @@
 use amethyst::core::Transform;
 use amethyst::ecs::Entities;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage, ReadExpect};
+use amethyst::ecs::{Join, Read, ReadExpect, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
-use amethyst::renderer::{SpriteRender};
+use amethyst::renderer::SpriteRender;
 
 use crate::rogue::bullet::Bullet;
 use crate::rogue::player::Player;
@@ -11,7 +11,6 @@ use crate::rogue::BulletSprite;
 pub struct ShootSystem {
     pub delay: u32,
 }
-
 
 impl<'s> System<'s> for ShootSystem {
     type SystemData = (
@@ -24,8 +23,10 @@ impl<'s> System<'s> for ShootSystem {
         ReadExpect<'s, BulletSprite>,
     );
 
-
-    fn run(&mut self, (mut transforms, mut bullets, input, entities, player, mut sprites, bullet_sprite): Self::SystemData) {
+    fn run(
+        &mut self,
+        (mut transforms, mut bullets, input, entities, player, mut sprites, bullet_sprite): Self::SystemData,
+    ) {
         if self.delay != 0 {
             self.delay -= 1;
         }
@@ -33,6 +34,7 @@ impl<'s> System<'s> for ShootSystem {
         let mut bullet_trans = Transform::default();
         let mut player_vel: [f32; 2] = [0.0, 0.0];
 
+        // grab player position and velocity for bullet spawn info
         for (player, transform) in (&player, &transforms).join() {
             bullet_trans = transform.clone();
             player_vel = player.velocity;
@@ -41,14 +43,18 @@ impl<'s> System<'s> for ShootSystem {
         let shoot_x = input.axis_value("shoot_x").unwrap_or(0.0) as f32;
         let shoot_y = input.axis_value("shoot_y").unwrap_or(0.0) as f32;
 
+        // delay is set back to 30 upon shooting, then subtracted every frame
+        if (shoot_x != 0.0 || shoot_y != 0.0) && self.delay <= 0 {
+            // scales the velocity of a fired bullet to the player's movement
+            let scaled_vel = [
+                shoot_x * 2.0 + player_vel[0] * 0.5,
+                shoot_y * 2.0 + player_vel[1] * 0.5,
+            ];
 
-        if (shoot_x != 0.0 || shoot_y != 0.0) && self.delay <= 0 { 
-            let scaled_vel = [shoot_x * 2.0 + player_vel[0], shoot_y * 2.0 + player_vel[1]];
-
-            let vel = (scaled_vel[0].powi(2) + scaled_vel[1].powi(2)).sqrt(); 
+            // pythagorean theorum for a bullet's diagonal velocity
+            let vel = (scaled_vel[0].powi(2) + scaled_vel[1].powi(2)).sqrt();
+            // gets proper radian angle for the bullet direction
             let rotation = scaled_vel[1].atan2(scaled_vel[0]);
-
-            println!("rotation: {}\nvelocity: {}", rotation, vel);
             bullet_trans.set_rotation_euler(0.0, 0.0, rotation);
 
             entities
